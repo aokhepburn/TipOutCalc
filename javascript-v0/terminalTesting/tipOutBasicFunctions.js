@@ -26,7 +26,7 @@ let employees = {
         "total": 0,
     },
     "sasha": {
-        "role": "svrasst",
+        "role": "svrAsst",
         "tipsEarned": 0,
         "hourlyWage": 15,
         "hoursWorked": 2,
@@ -53,10 +53,29 @@ let shiftTotals = {
     },
 }
 
-function setSvrAsstTipout() { }
-function addNewEmployee() { }
+function setSvrAsstTipout() {/*to add when HTML is set up */ }
 
+function addNewEmployee() {/*to add when HTML is set up */ }
+//check
+// for loop that collects the information from the dict "employees" and adds information to "shiftTotals"
+function collectShiftInformation() {
+    for (let key of Object.keys(employees)) {
+        if (employees[key].role == "bartender") {
+            shiftTotals.bartenderPool.bartenderTotalHours += employees[key].hoursWorked
+            shiftTotals.bartenderPool.bartenderTotalTips += employees[key].tipsEarned
+        }
+        else if (employees[key].role == "server") {
+            shiftTotals.serverPool.serverTotalHours += employees[key].hoursWorked
+            shiftTotals.serverPool.serverTotalTips += employees[key].tipsEarned
+        }
+        else if (employees[key].role == "svrAsst") {
+            shiftTotals.svrAsstPool.svrAsstTotalHours += employees[key].hoursWorked
+        } else { console.log("role not recognized") }
+    }
+    return shiftTotals
+}
 // check
+// adds the tips for svrAssts by taking percentages of total tips
 function calculatingTipOut() {
 
     shiftTotals.bartenderPool.bartenderTipOut = roundNum(
@@ -69,8 +88,66 @@ function calculatingTipOut() {
     console.log(shiftTotals)
     return shiftTotals
 }
-function collectShiftInformation() { }
-function calculatingTippedHourly() { }
+function calculatingTippedHourly() {
+    if (shiftTotals.svrAsstPool.svrAsstTotalHours > 0) {
+        let btHourly = (
+            shiftTotals.bartenderPool.bartenderTotalTips
+            - shiftTotals.bartenderPool.bartenderTipOut
+        )
+            / shiftTotals.bartenderPool.bartenderTotalHours
+        shiftTotals.bartenderPool.bartenderHourly = roundNum(
+            btHourly
+        )
+        shiftTotals.serverPool.serverTotalHours = roundNum(shiftTotals.serverPool.serverTotalTipOut
+            - shiftTotals.serverPool.serverTipOut
+            / shiftTotals.serverPool.serverTotalHours)
+
+    }
+
+    return shiftTotals
+}
+/*if shift_totals["svrasst pool"]["svrasst total hours"] > 0:
+ 
+if shift_totals["server pool"]["server total hours"] > 0:
+    shift_totals["server pool"]["server hourly"] += round(
+        (
+            shift_totals["server pool"]["server total tips"]
+            - shift_totals["server pool"]["server tipout"]
+        )
+        / shift_totals["server pool"]["server total hours"],
+        2,
+    )
+shift_totals["svrasst pool"]["svrasst hourly"] += round(
+    (
+        shift_totals["svrasst pool"]["svrasst total tips"]
+        / shift_totals["server pool"]["server total hours"]
+    ),
+    2,
+)
+
+else:
+if shift_totals["bartender pool"]["bartender total hours"] > 0:
+    shift_totals["bartender pool"]["bartender hourly"] = round(
+        (
+            shift_totals["bartender pool"]["bartender total tips"]
+            / shift_totals["bartender pool"]["bartender total hours"]
+        ),
+        2,
+    )
+if shift_totals["server pool"]["server total hours"] > 0:
+    shift_totals["server pool"]["server hourly"] = round(
+        (
+            shift_totals["server pool"]["server total tips"]
+            / shift_totals["server pool"]["server total hours"]
+        ),
+        2,
+    )
+shift_totals["svrasst pool"]["svrasst hourly"] = 0*/
+
 function employeeTipOut() { }
 
+calculatingTipOut()
+collectShiftInformation()
+calculatingTippedHourly()
+console.log(shiftTotals)
 

@@ -66,6 +66,7 @@ shift_totals = {
 }
 
 
+# for terminal input
 def set_svrasst_tipout():
     global svrasst_tipout
 
